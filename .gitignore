@@ -7,3 +7,4 @@ pom.xml.asc
 *.class
 /.lein-*
 /.nrepl-port
+/src/asana_paymo_sync/config.clj
