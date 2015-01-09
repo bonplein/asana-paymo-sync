@@ -17,5 +17,5 @@
 (defn clients
   "Retrieve clients from paymo"
   []
-  (paymo-get "projects"))
+  (paymo-get "clients"))
 
