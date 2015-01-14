@@ -4,6 +4,30 @@
             [asana-paymo-sync.config :as config]
             [clojure.pprint :as pprint]))
 
+;;
+;; sync from asana to paymo
+;;
+
+(defn mapped?
+  [project]
+  (some #(= (:id project)
+            (:asana %)) config/projects-mapping))
+
+(defn asana-projects-to-sync
+  "Fetches projects from asana and only returns ones that are mapped to paymo projects"
+  []
+  (->> (asana/projects)
+       (seq)
+       (filter mapped?)))
+
+(defn asana-extend-project
+  "Fetches the sections and tasks for each project"
+  [project]
+  (->> project
+       (:id)
+       (asana/tasks-by-project)
+       (asana/sections-and-tasks)))
+
 (defn sort-hashmaps
   "Makes sure the map items from both services are sorted the same way."
   [maps]
