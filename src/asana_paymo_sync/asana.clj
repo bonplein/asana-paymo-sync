@@ -31,8 +31,8 @@
   "Retrieve all tasks by project"
   [project-id]
   (asana-get (str "projects/"
-                      project-id
-                      "/tasks")))
+                  project-id
+                  "/tasks")))
 
 
 (defn sections-and-tasks
