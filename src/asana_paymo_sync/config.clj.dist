@@ -19,3 +19,5 @@
   '({:asana "" :paymo ""}
     {:asaba "" :paymo ""}))
 
+(def database
+  "mysql://root:@localhost/async_paymo_sync")
