@@ -29,6 +29,11 @@
   []
   (paymo-get "clients"))
 
+(defn users
+  "Retrieve users from paymo"
+  []
+  (paymo-get "users"))
+
 (defn projects
   "Retrieve projects from paymo"
   []

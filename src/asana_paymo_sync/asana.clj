@@ -20,6 +20,13 @@
       (parse-string true)
       (:data)))
 
+(defn users
+  "Retrieve all users"
+  []
+  (asana-get (str "workspaces/"
+                  workspace
+                  "/users?opt_fields=email")))
+
 (defn projects
   "Retrieve all projects"
   []
