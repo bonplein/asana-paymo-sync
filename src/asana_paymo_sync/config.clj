@@ -23,7 +23,7 @@
 ;; use the entry ids on both sides
 ;; PROJECTS_MAPPING=1234123412,1234134;123423415,452452345
 (def projects-mapping
-  (->> (-> (env :projects-mapping "")
+  (->> (-> (env :projects-mapping "0,0")
            (str/split #"\,|\;"))
        (partition-all 2)
        (map (fn [m]
