@@ -18,6 +18,12 @@ lein run paymo projects
 lein run paymo users
 ```
 
+## Development
+
+```bash
+foreman run lein repl -f Procfile.dev
+```
+
 ## License
 
 Copyright © 2015 Hofrat + Suess GmbH
