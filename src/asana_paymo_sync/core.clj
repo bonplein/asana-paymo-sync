@@ -2,7 +2,8 @@
   (:require [asana-paymo-sync.asana :as asana]
             [asana-paymo-sync.paymo :as paymo]
             [asana-paymo-sync.config :as config]
-            [clojure.pprint :as pprint]))
+            [clojure.pprint :as pprint])
+  (:gen-class))
 
 ;;
 ;; sync from asana to paymo
