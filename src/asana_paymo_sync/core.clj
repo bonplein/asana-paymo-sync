@@ -11,8 +11,9 @@
 
 (defn mapped?
   [project]
-  (some #(= (:id project)
-            (:asana %)) config/projects-mapping))
+  (not
+   (nil?
+    (get config/projects-mapping (:id project)))))
 
 (defn asana-projects-to-sync
   "Fetches projects from asana and only returns ones that are mapped to paymo projects"
