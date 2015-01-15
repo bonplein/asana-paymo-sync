@@ -21,7 +21,7 @@ lein run paymo users
 ## Development
 
 ```bash
-foreman run lein repl -f Procfile.dev
+foreman run lein repl
 ```
 
 ## License
