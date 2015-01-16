@@ -9,11 +9,19 @@
 ;; sync from asana to paymo
 ;;
 
+(defn vget-project
+  "Get the Paymo project-id by the Asana project-id"
+  [asana-id]
+  (get config/projects-mapping asana-id))
+
 (defn mapped?
+  "Returns true if the Asana project has been mapped to a Paymo project."
   [project]
-  (not
-   (nil?
-    (get config/projects-mapping (:id project)))))
+  (->> project
+       :id
+       vget-project
+       nil?
+       not))
 
 (defn asana-projects-to-sync
   "Fetches projects from asana and only returns ones that are mapped to paymo projects"
