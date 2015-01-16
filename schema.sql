@@ -4,7 +4,7 @@
 DROP TABLE IF EXISTS `mappings`;
 
 CREATE TABLE `mappings` (
-  `asana` int(20) NOT NULL,
-  `paymo` int(20) NOT NULL,
+  `asana` BIGINT(20) UNSIGNED NOT NULL,
+  `paymo` BIGINT(20) UNSIGNED NOT NULL,
   CONSTRAINT unique_ids UNIQUE (`asana`,`paymo`)
 ) ENGINE=InnoDB;
