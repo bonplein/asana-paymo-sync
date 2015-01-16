@@ -2,6 +2,7 @@
   (:require [asana-paymo-sync.asana :as asana]
             [asana-paymo-sync.paymo :as paymo]
             [asana-paymo-sync.config :as config]
+            [asana-paymo-sync.database :as database]
             [clojure.pprint :as pprint])
   (:gen-class))
 
@@ -38,15 +39,6 @@
        (asana/tasks-by-project)
        (asana/sections-and-tasks)))
 
-(defn synchronize
-  "Master task which is responsible for syncing Asana with Paymo"
-  [project]
-  (doall
-   (for [section-with-tasks (asana-extend-project project)
-         :let [section (first (first section-with-tasks))
-               tasks   (last section-with-tasks)]]
-     (println (:name section)))))
-
 (defn sort-hashmaps
   "Makes sure the map items from both services are sorted the same way."
   [maps]
@@ -60,6 +52,29 @@
        (last)
        (map #(select-keys % required-keys))))
 
+(defn synchronize
+  "Master task which is responsible for syncing Asana with Paymo"
+  [project]
+  (doall
+   (for [section-with-tasks (asana-extend-project project)
+         :let [section (first (first section-with-tasks))
+               tasks   (last section-with-tasks)]]
+     (do
+       (if-let [paymo-id (->> section
+                              :id
+                              database/get-tuple)]
+         (println "Tasklist is already there, make a deep equality check")
+         (do
+           (->>
+            ;; create the tasklist in Paymo
+            (-> (paymo/create-tasklist (:name section) (vget-project (:id project)))
+                (extract-and-normalize-paymo [:id])
+                first
+                :id)
+            ;; save the returned tasklist-id from Paymo together with the section-id
+            (database/set-tuple (:id section)))
+           (println (str "Created Tasklist: "
+                         (apply str (drop-last (:name section)))))))))))
 (defn -main
   "Command-line entry point."
   [& args]
