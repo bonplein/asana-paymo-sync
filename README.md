@@ -20,6 +20,13 @@ lein run paymo users
 
 ## Development
 
+Create a MySQL database which we'll use for development
+
+```bash
+mysql -uroot -e "drop database if exists asana_paymo_sync; create database asana_paymo_sync;"
+mysql -uroot -D asana_paymo_sync < schema.sql
+```
+
 ```bash
 foreman run lein repl
 ```
