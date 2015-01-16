@@ -36,4 +36,4 @@
     {:asaba "" :paymo ""}))
 
 (def database
-  (env :database-url "mysql://root:@localhost/async_paymo_sync"))
+  (env :database-url "mysql://root:@localhost/asana_paymo_sync"))
