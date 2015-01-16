@@ -11,18 +11,20 @@
                   {:basic-auth [(:username config/paymo) (:password config/paymo)]
                    :follow-redirects true
                    :accept :json})
-      (:body)
+      :body
       (parse-string true)))
 
 (defn paymo-post
   "Wrapper to include the authentication header for POST calls"
   [url data]
-  (client/post (str (:api-url config/paymo)
-                    url)
-               {:basic-auth [(:username config/paymo) (:password config/paymo)]
-                :accept :json
-                :form-params data
-                :content-type :json}))
+  (-> (client/post (str (:api-url config/paymo)
+                        url)
+                   {:basic-auth [(:username config/paymo) (:password config/paymo)]
+                    :accept :json
+                    :form-params data
+                    :content-type :json})
+      :body
+      (parse-string true)))
 
 (defn clients
   "Retrieve clients from paymo"
