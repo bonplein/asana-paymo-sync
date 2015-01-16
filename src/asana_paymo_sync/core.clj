@@ -30,6 +30,15 @@
        (asana/tasks-by-project)
        (asana/sections-and-tasks)))
 
+(defn synchronize
+  "Master task which is responsible for syncing Asana with Paymo"
+  [project]
+  (doall
+   (for [section-with-tasks (asana-extend-project project)
+         :let [section (first (first section-with-tasks))
+               tasks   (last section-with-tasks)]]
+     (println (:name section)))))
+
 (defn sort-hashmaps
   "Makes sure the map items from both services are sorted the same way."
   [maps]
