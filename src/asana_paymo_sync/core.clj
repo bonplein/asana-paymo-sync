@@ -52,29 +52,58 @@
        (last)
        (map #(select-keys % required-keys))))
 
+(defn get-paymo-tasklist
+  "Extracts a single tasklist entry from the paymo project map"
+  [project tasklist-id]
+  (->> project
+       :tasklists
+       (filter #(= tasklist-id (:id %)))
+       first))
+
 (defn synchronize
   "Master task which is responsible for syncing Asana with Paymo"
   [project]
   (doall
-   (for [section-with-tasks (asana-extend-project project)
-         :let [section (first (first section-with-tasks))
-               tasks   (last section-with-tasks)]]
-     (do
-       (if-let [paymo-id (->> section
-                              :id
-                              database/get-tuple)]
-         (println "Tasklist is already there, make a deep equality check")
-         (do
-           (->>
-            ;; create the tasklist in Paymo
-            (-> (paymo/create-tasklist (:name section) (vget-project (:id project)))
-                (extract-and-normalize-paymo [:id])
-                first
-                :id)
-            ;; save the returned tasklist-id from Paymo together with the section-id
-            (database/set-tuple (:id section)))
-           (println (str "Created Tasklist: "
-                         (apply str (drop-last (:name section)))))))))))
+   (let [paymo-project (->> project
+                            :id
+                            vget-project
+                            paymo/project)]
+     (doseq [section-with-tasks (asana-extend-project project)
+             :let [section (first (first section-with-tasks))
+                   tasks   (last section-with-tasks)]]
+       (do
+         (if-let [tasklist-id (->> section
+                                   :id
+                                   database/get-tuple)]
+           ;; check if the name needs to be changed
+           (let [tasklist (get-paymo-tasklist paymo-project tasklist-id)]
+             (if (not
+                  (= (:name tasklist)
+                     (:name section)))
+               (do
+                 (println (pr-str (paymo/rename-tasklist (:name section) tasklist-id)))
+                 (println "Tasklist/Section names were different and are now the same again."))
+               (println "Tasklist/Section names are the same, everything ok.")))
+           (do
+             (->>
+              ;; create the tasklist in Paymo
+              (-> (paymo/create-tasklist (:name section) (vget-project (:id project)))
+                  (extract-and-normalize-paymo [:id])
+                  first
+                  :id)
+              ;; save the returned tasklist-id from Paymo together with the section-id
+              (database/set-tuple (:id section)))
+             (println (str "Created Tasklist: "
+                           (apply str (drop-last (:name section))))))))))))
+
+(defn synchronize-all
+  "Synchronize all projects"
+  []
+  (doseq [project (asana-projects-to-sync)]
+    (do
+      (println (str "Sync project: " (:name project)))
+      (synchronize project)
+      (println (str "Synced project: " (:name project))))))
 (defn -main
   "Command-line entry point."
   [& args]
