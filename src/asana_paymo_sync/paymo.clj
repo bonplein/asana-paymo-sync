@@ -25,6 +25,13 @@
                    authentication-map)
       :body
       (parse-string true)))
+
+(defn paymo-put
+  "Wrapper to include the authentication header for PUT calls"
+  [url data]
+  (-> (client/put (str (:api-url config/paymo)
+                       url)
+                  authentication-map)
       :body
       (parse-string true)))
 
@@ -58,6 +65,12 @@
   (paymo-post "tasklists"
               {:name name
                :project_id project-id}))
+
+(defn rename-tasklist
+  [name tasklist-id]
+  (paymo-put (str "tasklists/" tasklist-id)
+             {:id tasklist-id
+              :name name}))
 
 (defn create-task
   [name tasklist-id project-id]
