@@ -44,9 +44,12 @@
 (defn project
   "Retrieves a project with its tasklists and tasks from paymo"
   [project-id]
-  (paymo-get (str "projects/"
-                  project-id
-                  "?include=tasklists,tasks")))
+  (->> (str "projects/"
+            project-id
+            "?include=tasklists,tasks")
+       paymo-get
+       :projects
+       first))
 
 (defn create-tasklist
   [name project-id]
