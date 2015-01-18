@@ -3,14 +3,17 @@
             [cheshire.core :refer :all]
             [asana-paymo-sync.config :as config]))
 
+(def authentication-map
+  {:basic-auth [(:username config/paymo) (:password config/paymo)]
+   :follow-redirects true
+   :accept :json})
+
 (defn paymo-get
   "Wrapper to include the authentication header for GET calls"
   [url]
   (-> (client/get (str (:api-url config/paymo)
                        url)
-                  {:basic-auth [(:username config/paymo) (:password config/paymo)]
-                   :follow-redirects true
-                   :accept :json})
+                  authentication-map)
       :body
       (parse-string true)))
 
@@ -19,10 +22,9 @@
   [url data]
   (-> (client/post (str (:api-url config/paymo)
                         url)
-                   {:basic-auth [(:username config/paymo) (:password config/paymo)]
-                    :accept :json
-                    :form-params data
-                    :content-type :json})
+                   authentication-map)
+      :body
+      (parse-string true)))
       :body
       (parse-string true)))
 
