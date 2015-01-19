@@ -84,6 +84,7 @@
                  (println (pr-str (paymo/rename-tasklist (:name section) tasklist-id)))
                  (println "Tasklist/Section names were different and are now the same again."))
                (println "Tasklist/Section names are the same, everything ok.")))
+           ;; tasklist does not exist yet, therefore create it.
            (do
              (->>
               ;; create the tasklist in Paymo
