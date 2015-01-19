@@ -22,7 +22,9 @@
   [url data]
   (-> (client/post (str (:api-url config/paymo)
                         url)
-                   authentication-map)
+                   (merge
+                    authentication-map
+                    {:form-params data}))
       :body
       (parse-string true)))
 
@@ -31,7 +33,9 @@
   [url data]
   (-> (client/put (str (:api-url config/paymo)
                        url)
-                  authentication-map)
+                  (merge
+                   authentication-map
+                   {:form-params data}))
       :body
       (parse-string true)))
 
@@ -68,7 +72,9 @@
 
 (defn rename-tasklist
   [name tasklist-id]
-  (paymo-put (str "tasklists/" tasklist-id)
+  (paymo-put (str
+              "tasklists/"
+              tasklist-id)
              {:id tasklist-id
               :name name}))
 
