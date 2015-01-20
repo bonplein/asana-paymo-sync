@@ -2,6 +2,8 @@
 
 A Clojure script that syncs projects, sections, tasks and user-task associations coming from [Asana](https://asana.com) with the time tracking service [Paymo](http://www.paymoapp.com/).
 
+[![Build Status](https://travis-ci.org/hofratsuess/asana-paymo-sync.svg?branch=master)](https://travis-ci.org/hofratsuess/asana-paymo-sync)
+
 ## Setup
 
 In order for the script to be able to synchronize it needs project and user mappings in `config.clj`. Since they're both `id` based there are some CLI functions that help with filling those out.
