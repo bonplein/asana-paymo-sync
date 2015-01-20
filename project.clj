@@ -10,6 +10,7 @@
                  [yesql "0.4.0"]
                  [environ "1.0.0"]]
   :plugins [[lein-environ "1.0.0"]]
+  :profiles {:dev {:dependencies [[clj-http-fake "1.0.1"]]}}
   :uberjar-name "asana-paymo-sync-standalone.jar"
   :main asana-paymo-sync.core
   :aot :all)
