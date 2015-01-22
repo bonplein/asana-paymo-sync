@@ -85,3 +85,10 @@
                :tasklist_id tasklist-id
                :project_id project-id}))
 
+(defn update-task
+  [task]
+  (paymo-put (str
+              "tasks/"
+              (:id task))
+             (select-keys task
+                          [:id :name :users])))

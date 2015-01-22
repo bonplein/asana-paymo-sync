@@ -60,6 +60,14 @@
        (filter #(= tasklist-id (:id %)))
        first))
 
+(defn get-paymo-task
+  "Extract a single task entry from the paymo project map"
+  [project task-id]
+  (->> project
+       :tasks
+       (filter #(= task-id (:id %)))
+       first))
+
 (defn synchronize
   "Master task which is responsible for syncing Asana with Paymo"
   [project]
@@ -106,7 +114,22 @@
                                          :id
                                          database/get-tuple)]
                ;; check if the task attributes need to be changed
-               (println (str "Task already exists: " paymo-task-id " " (:id asana-task)))
+               (let [original-paymo-task (get-paymo-task paymo-project paymo-task-id)
+                     paymo-task (atom original-paymo-task)]
+                 (do
+                   ;; update the name if it's changed
+                   (if (not
+                        (= (:name asana-task)
+                           (:name @paymo-task)))
+                     (do
+                       (swap! paymo-task assoc :name (:name asana-task))
+                       (println (str "Change the name of paymo-task: " paymo-task-id)))
+                     nil)                   
+                   (if (not (= original-paymo-task @paymo-task))
+                     (do
+                       (paymo/update-task @paymo-task)
+                       (println (str "Updated Task: " (:id @paymo-task))))
+                     (println (str "Leave the paymo task " paymo-task-id " unchanged")))))
                ;; task does not exist yet, therefore create it.                                                               
                (do
                  (->> 
@@ -120,7 +143,7 @@
                   ;; save the returned task-id from Paymo together with the Asana task-id
                   (database/set-tuple (:id asana-task)))
                  (println (str "Created Task: "
-                                 (:name asana-task))))))))))))
+                               (:name asana-task))))))))))))
 
 (defn synchronize-all
   "Synchronize all projects"
