@@ -10,6 +10,16 @@
       default
       ev)))
 
+(defn parse-mappings
+  [env-variable]
+  (->> (-> (env env-variable "0,0")
+           (str/split #"\,|\;"))
+       (partition-all 2)
+       (map (fn [m]
+              {(Long/parseLong (first m))
+               (Long/parseLong (last m))}))
+       (apply merge)))
+
 (def asana
   {:api-key (env :asana-api-key "")
    :workspace (env :asana-workspace "")
@@ -23,17 +33,11 @@
 ;; use the entry ids on both sides
 ;; PROJECTS_MAPPING=1234123412,1234134;123423415,452452345
 (def projects-mapping
-  (->> (-> (env :projects-mapping "0,0")
-           (str/split #"\,|\;"))
-       (partition-all 2)
-       (map (fn [m]
-              {(Long/parseLong (first m))
-               (Long/parseLong (last m))}))
-       (apply merge)))
+  (parse-mappings :projects-mapping))
 
+;; USERS_MAPPING=565465,56454;563257,56861
 (def users-mapping
-  '({:asana "" :paymo ""}
-    {:asaba "" :paymo ""}))
+  (parse-mappings :users-mapping))
 
 (def database
   (env :database-url "mysql://root:@localhost/asana_paymo_sync"))

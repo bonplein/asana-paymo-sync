@@ -15,6 +15,11 @@
   [asana-id]
   (get config/projects-mapping asana-id))
 
+(defn vget-user
+  "Get the Paymo user-id by the Asana user-id"
+  [asana-id]
+  (get config/users-mapping asana-id))
+
 (defn mapped?
   "Returns true if the Asana project has been mapped to a Paymo project."
   [project]
