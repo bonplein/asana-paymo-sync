@@ -142,6 +142,14 @@
                          (swap! paymo-task assoc :users (vector paymo-user-id))
                          (println "Add user to paymo-task: " paymo-task-id))
                        nil))
+                   ;; if no assignee is defined make sure that's the case too in paymo
+                   (if (and (nil? (:assignee asana-task))
+                            (not (empty? (:users @paymo-task))))
+                     (do
+                       (swap! paymo-task assoc :users nil)
+                       (println (pr-str @paymo-task))
+                       (println "Cleared user for paymo-task: " paymo-task-id))
+                     nil)
                    ;; make the update call to paymo if any of the previous checks changed the atom
                    (if (not (= original-paymo-task @paymo-task))
                      (do
