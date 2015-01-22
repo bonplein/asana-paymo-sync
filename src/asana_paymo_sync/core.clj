@@ -180,21 +180,26 @@
       (println (str "Synced project: " (:name project))))))
 (defn -main
   "Command-line entry point."
-  [& args]
-  (let [provider (first args)
-        resource (nth args 1)]
+  [& args-coll]
+  (let [args     (vec args-coll)
+        provider (get args 0)
+        resource (get args 1)]
     (-> (case provider
-          "asana" (case resource
-                    "projects" (asana/projects)
-                    "users"    (asana/users)
-                    "Please provide a resource.")
-          "paymo" (case resource
-                    "projects" (extract-and-normalize-paymo (paymo/projects)
-                                                            [:id :name])
-                    "users"    (extract-and-normalize-paymo (paymo/users)
-                                                            [:id :email])
-                    "Please provide a resource."))
-        (sort-hashmaps)
+          "asana" (-> (case resource
+                        "projects" (asana/projects)
+                        "users"    (asana/users)
+                        "Please provide a resource.")
+                      (sort-hashmaps))
+          "paymo" (-> (case resource
+                        "projects" (extract-and-normalize-paymo (paymo/projects)
+                                                                [:id :name])
+                        "users"    (extract-and-normalize-paymo (paymo/users)
+                                                                [:id :email])
+                        "Please provide a resource.")
+                      (sort-hashmaps))
+          "sync" (synchronize-all)
+          "sync_asana" (map asana-extend-project (asana-projects-to-sync))
+          "sync_paymo" (map #(paymo/project (:id %)) (paymo/projects)))
         (pprint/pprint)
         (println))))
 
