@@ -147,7 +147,6 @@
                             (not (empty? (:users @paymo-task))))
                      (do
                        (swap! paymo-task assoc :users nil)
-                       (println (pr-str @paymo-task))
                        (println "Cleared user for paymo-task: " paymo-task-id))
                      nil)
                    ;; make the update call to paymo if any of the previous checks changed the atom
