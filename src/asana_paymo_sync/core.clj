@@ -95,7 +95,32 @@
               ;; save the returned tasklist-id from Paymo together with the section-id
               (database/set-tuple (:id section)))
              (println (str "Created Tasklist: "
-                           (apply str (drop-last (:name section))))))))))))
+                           (:name section)))))
+         ;; get tasklist for which the tasks need to be created
+         (let [paymo-tasklist-id (->> section
+                                      :id
+                                      database/get-tuple)]
+           ;; go through the tasks sequentially, either creating or updating them
+           (doseq [asana-task tasks]
+             (if-let [paymo-task-id (->> asana-task
+                                         :id
+                                         database/get-tuple)]
+               ;; check if the task attributes need to be changed
+               (println (str "Task already exists: " paymo-task-id " " (:id asana-task)))
+               ;; task does not exist yet, therefore create it.                                                               
+               (do
+                 (->> 
+                  ;; create the task in Paymo
+                  (-> (paymo/create-task (:name asana-task)
+                                         paymo-tasklist-id
+                                         (:id paymo-project))
+                      :tasks
+                      first
+                      :id)
+                  ;; save the returned task-id from Paymo together with the Asana task-id
+                  (database/set-tuple (:id asana-task)))
+                 (println (str "Created Task: "
+                                 (:name asana-task))))))))))))
 
 (defn synchronize-all
   "Synchronize all projects"
