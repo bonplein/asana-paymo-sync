@@ -129,7 +129,20 @@
                      (do
                        (swap! paymo-task assoc :name (:name asana-task))
                        (println (str "Change the name of paymo-task: " paymo-task-id)))
-                     nil)                   
+                     nil)
+                   ;; update the assigned user if it's changed
+                   (if-let [paymo-user-id (->> asana-task
+                                               :assignee
+                                               :id
+                                               vget-user)]
+                     (if (not
+                          (= paymo-user-id
+                             (first (:users @paymo-task))))
+                       (do
+                         (swap! paymo-task assoc :users (vector paymo-user-id))
+                         (println "Add user to paymo-task: " paymo-task-id))
+                       nil))
+                   ;; make the update call to paymo if any of the previous checks changed the atom
                    (if (not (= original-paymo-task @paymo-task))
                      (do
                        (paymo/update-task @paymo-task)
