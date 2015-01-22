@@ -1,0 +1,40 @@
+{:clients
+ [{:postal_code "410017",
+   :address "str. Roman Ciorogariu nr. 24",
+   :fax "",
+   :email "support@paymoapp.com",
+   :phone "",
+   :image_thumb_small
+   "https://app.paymoapp.com/assets/22254/clients/thumbs/small/511e5f9e4f2d263c394ce44c94e4213b.png",
+   :image_thumb_medium
+   "https://app.paymoapp.com/assets/22254/clients/thumbs/medium/511e5f9e4f2d263c394ce44c94e4213b.png",
+   :name "Paymo",
+   :city "Oradea",
+   :state "Bihor",
+   :updated_on "2015-01-09T08:16:19Z",
+   :image_thumb_large
+   "https://app.paymoapp.com/assets/22254/clients/thumbs/large/511e5f9e4f2d263c394ce44c94e4213b.png",
+   :created_on "2015-01-09T08:16:19Z",
+   :fiscal_information "",
+   :active true,
+   :id 245716,
+   :website "http://paymoapp.com",
+   :image
+   "https://app.paymoapp.com/assets/22254/clients/511e5f9e4f2d263c394ce44c94e4213b.png",
+   :country "RO"}
+  {:postal_code "",
+   :address "",
+   :fax "",
+   :email "",
+   :phone "",
+   :name "Acme Corp",
+   :city "",
+   :state "",
+   :updated_on "2015-01-22T07:47:52Z",
+   :created_on "2015-01-22T07:47:52Z",
+   :fiscal_information "",
+   :active true,
+   :id 283439,
+   :website "",
+   :image nil,
+   :country ""}]}
