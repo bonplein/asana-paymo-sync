@@ -47,7 +47,7 @@
   [tasks-from-asana]
   (let [tasks (if (section? (first tasks-from-asana))
                 tasks-from-asana
-                (cons {:id 0 :name "Default"}
+                (cons {:id 0 :name "Default:" :assignee nil}
                       tasks-from-asana))]
     (->> tasks
          (partition-by section?)
