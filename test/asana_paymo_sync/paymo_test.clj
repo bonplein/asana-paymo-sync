@@ -6,12 +6,13 @@
 
 (deftest fetch-projects
   (is (= (with-fake-routes
-           {"https://app.paymoapp.com/api/projects" (fn [request]
-                                                      {:status 200
-                                                       :headers {:accept :json}
-                                                       :body (generate-string
-                                                              {:projects [{:name "Projekt 1"}
-                                                                          {:name "Projekt 2"}]})})}
+           {"https://app.paymoapp.com/api/projects"
+            (fn [request]
+              {:status 200
+               :headers {:accept :json}
+               :body (generate-string
+                      {:projects [{:name "Projekt 1"}
+                                  {:name "Projekt 2"}]})})}
            (-> (projects)
                :projects
                count))
