@@ -135,9 +135,10 @@
                                                :assignee
                                                :id
                                                vget-user)]
+                     ;; since in paymo multiple users can be assigned to a task we only check for
+                     ;; contain? so that manual assignments on paymo's side remain
                      (if (not
-                          (= paymo-user-id
-                             (first (:users @paymo-task))))
+                          (contains? (set (:users @paymo-task)) paymo-user-id))
                        (do
                          (swap! paymo-task assoc :users (vector paymo-user-id))
                          (println "Add user to paymo-task: " paymo-task-id))
