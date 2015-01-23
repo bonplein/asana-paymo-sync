@@ -156,6 +156,13 @@
                        (swap! paymo-task assoc :complete true)
                        (println (str "Marked paymo-task: " paymo-task-id " as done")))
                      nil)
+                   ;; if task has been reopened, then reopen the task in paymo too
+                   (if (and (= false (:completed asana-task))
+                            (not (= false (:complete @paymo-task))))
+                     (do
+                       (swap! paymo-task assoc :complete false)
+                       (println (str "Marked paymo-task: " paymo-task-id " as open")))
+                     nil)
                    ;; make the update call to paymo if any of the previous checks changed the atom
                    (if (not (= original-paymo-task @paymo-task))
                      (do
