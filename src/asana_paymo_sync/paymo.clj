@@ -6,7 +6,8 @@
 (def authentication-map
   {:basic-auth [(:username config/paymo) (:password config/paymo)]
    :follow-redirects true
-   :accept :json})
+   :accept :json
+   :content-type :json})
 
 (defn paymo-get
   "Wrapper to include the authentication header for GET calls"
@@ -91,4 +92,4 @@
               "tasks/"
               (:id task))
              (select-keys task
-                          [:id :name :users])))
+                          [:id :name :users :complete])))

@@ -149,6 +149,13 @@
                        (swap! paymo-task assoc :users nil)
                        (println "Cleared user for paymo-task: " paymo-task-id))
                      nil)
+                   ;; if task is completed, then mark it as such in paymo
+                   (if (and (= true (:completed asana-task))
+                            (not (= true (:complete @paymo-task))))
+                     (do
+                       (swap! paymo-task assoc :complete true)
+                       (println (str "Marked paymo-task: " paymo-task-id " as done")))
+                     nil)
                    ;; make the update call to paymo if any of the previous checks changed the atom
                    (if (not (= original-paymo-task @paymo-task))
                      (do

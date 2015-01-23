@@ -39,7 +39,7 @@
   [project-id]
   (asana-get (str "projects/"
                   project-id
-                  "/tasks?opt_fields=name,assignee.email")))
+                  "/tasks?opt_fields=name,assignee.email,completed")))
 
 
 (defn sections-and-tasks
