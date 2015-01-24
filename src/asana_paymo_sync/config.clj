@@ -41,3 +41,9 @@
 
 (def database
   (env :database-url "mysql://root:@localhost/asana_paymo_sync"))
+
+(def dynamodb
+  {:access-key (env :aws-access-key "1234")
+   :secret-key (env :aws-secret-key "1234")
+   :endpoint   (env :dynamo-endpoint nil)})
+
