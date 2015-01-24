@@ -45,5 +45,6 @@
 (def dynamodb
   {:access-key (env :aws-access-key "1234")
    :secret-key (env :aws-secret-key "1234")
-   :endpoint   (env :dynamo-endpoint nil)})
+   :endpoint   (env :dynamo-endpoint nil)
+   :table      (keyword (env :dynamo-table-name "mappings"))})
 

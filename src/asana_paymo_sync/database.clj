@@ -8,7 +8,7 @@
   "Get the correlating Paymo key"
   [asana-key]
   (-> (far/get-item config/dynamodb
-                    :mappings
+                    (:table config/dynamodb)
                     {:asana asana-key})
       :paymo))
 
@@ -16,7 +16,7 @@
   "Set the Asana and correlating Paymo key"
   [asana-key paymo-key]
   (far/put-item config/dynamodb
-                :mappings
+                (:table config/dynamodb)
                 {:asana asana-key
                  :paymo paymo-key}))
 
@@ -24,6 +24,6 @@
 (defquery select-all "asana_paymo_sync/sql/select_all.sql")
 #_(doseq [mapping (select-all config/database)]
     (far/put-item config/dynamodb
-                  :mappings
+                  (:table config/dynamodb)
                   mapping))
 
