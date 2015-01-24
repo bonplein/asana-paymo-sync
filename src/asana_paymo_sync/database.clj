@@ -1,7 +1,5 @@
 (ns asana-paymo-sync.database
   (:require [taoensso.faraday :as far]
-            [clojure.java.jdbc :as jdbc]
-            [yesql.core :refer :all]
             [asana-paymo-sync.config :as config]))
 
 (defn get-tuple
@@ -19,11 +17,4 @@
                 (:table config/dynamodb)
                 {:asana asana-key
                  :paymo paymo-key}))
-
-;; migrate all the mappings from mysql to dynamodb
-(defquery select-all "asana_paymo_sync/sql/select_all.sql")
-#_(doseq [mapping (select-all config/database)]
-    (far/put-item config/dynamodb
-                  (:table config/dynamodb)
-                  mapping))
 
