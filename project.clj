@@ -9,7 +9,7 @@
                  [mysql/mysql-connector-java "5.1.32"]
                  [yesql "0.4.0"]
                  [environ "1.0.0"]
-                 [com.taoensso/faraday "1.5.0"]]
+                 [com.taoensso/faraday "1.5.0" :exclusions [org.clojure/clojure]]]
   :plugins [[lein-environ "1.0.0"]]
   :profiles {:dev {:dependencies [[clj-http-fake "1.0.1"]]}}
   :uberjar-name "asana-paymo-sync-standalone.jar"
