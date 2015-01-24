@@ -147,7 +147,7 @@
                    (if (and (nil? (:assignee asana-task))
                             (not (empty? (:users @paymo-task))))
                      (do
-                       (swap! paymo-task assoc :users nil)
+                       (swap! paymo-task assoc :users "")
                        (println "Cleared user for paymo-task: " paymo-task-id))
                      nil)
                    ;; if task is completed, then mark it as such in paymo
