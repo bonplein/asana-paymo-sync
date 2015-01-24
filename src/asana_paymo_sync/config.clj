@@ -43,8 +43,10 @@
   (env :database-url "mysql://root:@localhost/asana_paymo_sync"))
 
 (def dynamodb
-  {:access-key (env :aws-access-key "1234")
-   :secret-key (env :aws-secret-key "1234")
-   :endpoint   (env :dynamo-endpoint nil)
-   :table      (keyword (env :dynamo-table-name "mappings"))})
+  (merge {:access-key (env :aws-access-key "1234")
+          :secret-key (env :aws-secret-key "1234")
+          :table      (keyword (env :dynamo-table-name "mappings"))}
+         (if-let [endpoint (env :dynamo-endpoint nil)]
+           {:endpoint endpoint}
+           {})))
 
