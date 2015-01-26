@@ -28,14 +28,18 @@ lein run paymo users
 
 ## Development
 
-Create a MySQL database which we'll use for development
+Make sure that the [heroku toolbelt](https://toolbelt.heroku.com/), [homebrew](http://brew.sh/) and [Leiningen](http://leiningen.org/) (>= 2.5) is installed.
 
 ```bash
-mysql -uroot -e "drop database if exists asana_paymo_sync; create database asana_paymo_sync;"
-mysql -uroot -D asana_paymo_sync < schema.sql
-```
+# install dynamodb local (stable 2014-10-07)
+brew update
+brew install dynamodb-local
 
-```bash
+# fetch the environment variables from heroku, which will put them in the .env file
+# redact the file so the development machine isn't using the production database
+heroku config:pull
+
+# start up the leiningen repl with the environment variables defined in the .env file
 foreman run lein repl
 ```
 
