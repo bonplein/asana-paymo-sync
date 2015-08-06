@@ -12,4 +12,4 @@
   :profiles {:dev {:dependencies [[clj-http-fake "1.0.1"]]}}
   :uberjar-name "asana-paymo-sync-standalone.jar"
   :main asana-paymo-sync.core
-  :aot :all)
+  :aot [asana-paymo-sync.core])
